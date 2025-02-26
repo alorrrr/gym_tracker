@@ -16,8 +16,14 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include, re_path
+from users import urls as users_urls
+from users import views as users_views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("api/", include(users_urls)),
+    path("api/auth/", include('djoser.urls')),
+    path("api/auth/token/", include('djoser.urls.authtoken')),
+    path('api/auth/activate/<uid>/<token>/', users_views.UserActivationView.as_view(), name='activate'),
 ]
