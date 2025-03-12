@@ -12,7 +12,7 @@ class CustomUser(AbstractUser):
 
 
 class PasswordReset(models.Model):
-    email = models.EmailField()
+    email = models.EmailField(unique=True)
     reset_code = models.CharField(max_length=6)
     created_at = models.DateTimeField(auto_now_add=True)
     expires_at = models.DateTimeField()

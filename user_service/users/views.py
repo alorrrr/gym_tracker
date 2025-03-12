@@ -16,6 +16,7 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny
+from rest_framework import exceptions
 from .models import PasswordReset
 from .serializers import UserSerializer
 
@@ -51,6 +52,8 @@ class UserActivationView(APIView):
 class CustomUserViewSet(DjoserUserViewSet):
     permission_classes = [AllowAny] 
     def perform_create(self, serializer):
+        if User.objects.filter(email=serializer.validated_data['email']).exists():
+            raise exceptions.ValidationError("User with this email already exists.")
         user = serializer.save()
 
         activation_link = self.generate_activation_link(user)
