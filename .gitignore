@@ -1,3 +1,5 @@
 venv
 .env
 rabbitmq_data
+.coverage
+htmlcov

@@ -60,8 +60,6 @@ class CustomUserViewSet(DjoserUserViewSet):
         })
         self.send_to_rabbitmq(message)
     
-
-    
     def generate_activation_link(self, user):
         uid = urlsafe_base64_encode(force_bytes(user.id))
         token = default_token_generator.make_token(user)
@@ -87,7 +85,7 @@ class CustomUserViewSet(DjoserUserViewSet):
     def reset_password(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-
+        
         user = serializer.get_user()
         if user:
             reset_code = self.generate_reset_code()
@@ -104,7 +102,8 @@ class CustomUserViewSet(DjoserUserViewSet):
             })
 
             self.send_to_rabbitmq(message)
-
+        else:
+            return Response({'error': 'User is not found'}, status=status.HTTP_404_NOT_FOUND)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     def generate_reset_code(self):
@@ -118,12 +117,12 @@ class CustomUserViewSet(DjoserUserViewSet):
         reset_code = request.data.get('reset_code')
 
         try:
-            reset_entry = PasswordReset.objects.get(email=email, reset_code=reset_code)
-            if reset_entry.is_expired():
-                return Response({'error': 'Code expired'}, status=status.HTTP_400_BAD_REQUEST)
-
             user = User.objects.filter(email=email).first()
             if user:
+                reset_entry = PasswordReset.objects.get(email=email, reset_code=reset_code)
+                if reset_entry.is_expired():
+                    return Response({'error': 'Code expired'}, status=status.HTTP_400_BAD_REQUEST)
+                
                 user.set_password(new_password)
                 user.save()
 
