@@ -9,4 +9,5 @@ urlpatterns = [
     path("api/auth/", include('djoser.urls.authtoken')),
     path("api/", include(users_urls)),
     path('api/auth/activate/<uid>/<token>/', users_views.UserActivationView.as_view(), name='user-activate'),
+    path('api/auth/o/', include('allauth.urls')),
 ]

@@ -35,6 +35,20 @@ services:
         condition: service_started
     env_file:
       - .env
+  training-service:
+    image: training-service
+    build:
+      context: ./training_service/
+      dockerfile: Dockerfile
+    init: true
+    volumes:
+      - ./training_service/:/usr/src/app/
+    ports:
+      - "8002:8000"
+    depends_on:
+      - db
+    env_file:
+      - .env
   celery:
     image: notification-service
     build:
