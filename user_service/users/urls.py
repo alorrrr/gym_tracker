@@ -4,7 +4,6 @@ from rest_framework import routers
 from .views import UserViewSet, UserActivationView, CustomUserViewSet
 
 
-
 router = routers.SimpleRouter()
 router.register(r'users', UserViewSet)
 router.register(r'auth', CustomUserViewSet, basename='auth')

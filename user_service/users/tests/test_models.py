@@ -2,6 +2,7 @@ from django.test import TestCase
 from ..models import CustomUser, PasswordReset
 from rest_framework.authtoken.models import Token
 from django.utils import timezone
+from allauth.socialaccount.models import SocialAccount
 
 class TestCustomUser(TestCase):
     def test_user_creation(self):
@@ -28,3 +29,17 @@ class TestPasswordReset(TestCase):
         self.assertFalse(self.password_reset.is_expired())
         self.password_reset.expires_at = self.password_reset.created_at
         self.assertTrue(self.password_reset.is_expired())
+
+class TestActivateOnSocialLogin(TestCase):
+    def setUp(self):
+        self.user = CustomUser.objects.create(username='test', password='123123')
+
+    
+    def test_activation_on_social_login(self):
+        self.assertFalse(self.user.is_active)
+        self.social_account = SocialAccount.objects.create(
+            provider='google',
+            uid='52',
+            user_id=self.user.id
+        )
+        self.assertTrue(self.social_account.user.is_active)
