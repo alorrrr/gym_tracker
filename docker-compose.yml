@@ -37,6 +37,7 @@ services:
       - .env
   training-service:
     image: training-service
+    restart: always
     build:
       context: ./training_service/
       dockerfile: Dockerfile
@@ -76,6 +77,15 @@ services:
     ports:
       - "15672:15672"
       - "5672:5672"
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf  # Подключение вашей конфигурации
+    ports:
+      - "80:80"  # Перенаправление порта 80
+    depends_on:
+      - user-service
+      - training-service
 volumes:
   postgres_data:
   rabbitmq_data:
