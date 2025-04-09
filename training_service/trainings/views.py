@@ -1,14 +1,17 @@
 import requests
+from rest_framework.authentication import BaseAuthentication
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from .models import Training, Exercise
 from .serializers import TrainingSerializer, ExerciseSerializer
+from .authentication import NoAuthentication
 
 
 class TrainingViewSet(ModelViewSet):
     permission_classes = [AllowAny]
+    authentication_classes = [NoAuthentication]
     queryset = Training.objects.all()
     serializer_class = TrainingSerializer
 
@@ -25,6 +28,17 @@ class TrainingViewSet(ModelViewSet):
     def get_queryset(self, *args, **kwargs):
         if self.request.query_params.get('user_id'):
             return Training.objects.filter(user_id=self.request.query_params.get('user_id'))
+
+        if self.request.META['HTTP_AUTHORIZATION']:
+            token = self.request.META['HTTP_AUTHORIZATION'].split(' ')[1]
+
+            response = requests.get(f'http://user-service:8000/api/auth/me/', headers={'Authorization': f'Token {token}'})
+
+            if response.status_code == 200:
+                return Training.objects.filter(user_id=response.json().get('id'))
+            else:
+                raise Exception('User not found')
+
         return Training.objects.all()
 
     def perform_create(self, serializer):
@@ -45,7 +59,8 @@ class ExerciseViewSet(ModelViewSet):
     permission_classes = [AllowAny]
     serializer_class = ExerciseSerializer
     queryset = Exercise.objects.all()
-
+    authentication_classes = [NoAuthentication]
+    
     def get_queryset(self, *args, **kwargs):
         if self.request.query_params.get('training_id'):
             return Exercise.objects.filter(training_id=self.request.query_params.get('training_id'))

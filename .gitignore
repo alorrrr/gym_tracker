@@ -3,3 +3,4 @@ venv
 rabbitmq_data
 .coverage
 htmlcov
+__pycache__
