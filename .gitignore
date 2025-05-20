@@ -4,3 +4,4 @@ rabbitmq_data
 .coverage
 htmlcov
 __pycache__
+node_modules
