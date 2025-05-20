@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("DJANGO_TRAINING_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['training-service', '127.0.0.1']
+ALLOWED_HOSTS = ['training-service', '127.0.0.1', '87.228.83.10']
 
 
 # Application definition
