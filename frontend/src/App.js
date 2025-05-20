@@ -11,7 +11,7 @@ import {
 } from "react-router-dom";
 
 // API Endpoints
-const API_BASE = "http://87.228.83.10/api";
+const API_BASE = "/api";
 
 const Navbar = ({ onLogout }) => {
   return (
