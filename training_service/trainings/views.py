@@ -29,17 +29,20 @@ class TrainingViewSet(ModelViewSet):
         if self.request.query_params.get('user_id'):
             return Training.objects.filter(user_id=self.request.query_params.get('user_id'))
 
-        if self.request.META['HTTP_AUTHORIZATION']:
-            token = self.request.META['HTTP_AUTHORIZATION'].split(' ')[1]
+        try:
+            if self.request.META['HTTP_AUTHORIZATION']:
+                token = self.request.META['HTTP_AUTHORIZATION'].split(' ')[1]
 
-            response = requests.get(f'http://user-service:8000/api/auth/me/', headers={'Authorization': f'Token {token}'})
+                response = requests.get(f'http://user-service:8000/api/auth/me/', headers={'Authorization': f'Token {token}'})
 
-            if response.status_code == 200:
-                return Training.objects.filter(user_id=response.json().get('id'))
-            else:
-                raise Exception('User not found')
+                if response.status_code == 200:
+                    return Training.objects.filter(user_id=response.json().get('id'))
+                else:
+                    raise Exception('User not found')
+        except KeyError:
+            return Training.objects.all()
 
-        return Training.objects.all()
+        
 
     def perform_create(self, serializer):
         user_id = self.request.data.get('user_id')
