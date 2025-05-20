@@ -66,7 +66,7 @@ class CustomUserViewSet(DjoserUserViewSet):
     def generate_activation_link(self, user):
         uid = urlsafe_base64_encode(force_bytes(user.id))
         token = default_token_generator.make_token(user)
-        return f"http://127.0.0.1:8000/api/auth/activate/{uid}/{token}/"
+        return f"http://87.228.83.10/api/auth/activate/{uid}/{token}/"
     
     def send_to_rabbitmq(self, message):
         connection = pika.BlockingConnection(
