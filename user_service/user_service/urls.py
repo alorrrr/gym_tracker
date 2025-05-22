@@ -21,7 +21,7 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
+    #path("admin/", admin.site.urls),
     path("api/auth/", include('djoser.urls.authtoken')),
     path("api/", include(users_urls)),
     path('api/auth/activate/<uid>/<token>/', users_views.UserActivationView.as_view(), name='user-activate'),
