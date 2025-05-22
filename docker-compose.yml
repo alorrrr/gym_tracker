@@ -1,5 +1,4 @@
 networks:
-  public:
   internal:
 services:
   db:
@@ -111,7 +110,6 @@ services:
       - frontend
     networks:
       - internal
-      - public
   promtail:
     image: grafana/promtail:latest
     container_name: promtail
