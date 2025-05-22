@@ -24,13 +24,13 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['87.228.83.10']
+ALLOWED_HOSTS = ['user-service', '127.0.0.1', '87.228.83.10']
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    #"django.contrib.admin",
+    "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -195,3 +195,5 @@ LOGOUT_REDIRECT_URL = "/"
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
+
+SECURE_CROSS_ORIGIN_OPENER_POLICY=None
