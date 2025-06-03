@@ -5,4 +5,4 @@ A simple app to track your gym progress. Educational project, trying out instrum
 - Track your progress
 - View your workout history
 - View your progress history
-## If you want to try it out on your machine, you can go through the following link: (it will be awailable until the 20.05.2025) or pull it by git and launch it by docker-compose.
+## If you want to try it out on your machine, you can go through the following link: http://87.228.83.10/ (it will be awailable until the 20.05.2025) or pull it by git and launch it by docker-compose.
